@@ -1,0 +1,4 @@
+-i https://files.pythonhosted.org/packages/c7/87/fbd666c4f87591ae25b7bb374298e8629816e87193c4099d3608ef11fab9/Django-2.1.7-py3-none-any.whl
+Django~=2.1.7
+-e
+// python3.7
