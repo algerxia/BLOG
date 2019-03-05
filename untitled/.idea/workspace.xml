@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30ce5184-6427-4354-93b2-bc0e54f5a5ee" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../typeidea/typeidea/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/../typeidea/typeidea/settings/base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../typeidea/config/models.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
