@@ -16,17 +16,16 @@ Including another URLconf
 from blog import views as bv
 from config import views as cv
 from django.contrib import admin
-from django.urls import re_path
-
+from django.conf.urls import url
 # from typeidea.custom_site import custom_site
 
 urlpatterns = [
-    re_path(r'admin/', admin.site.urls),
-    re_path('', bv.post_list),
-    re_path('^category/(?P<category_id>\d+)/$', bv.post_list),
-    re_path('^tag/(?P<tag_id>\d+)/$', bv.post_list),
-    re_path('^post/(?P<post_id>\d+)/$', bv.post_list),
-    re_path('^links/$', cv.links),
-    # path(r'^super_admin/',admin.site.urls),
+    # url(r'^admin$/', custom_site.urls),
+    url(r'^$', bv.post_list),
+    url(r'^category/(?P<category_id>\d+)/$', bv.post_list),
+    url(r'^tag/(?P<tag_id>\d+)/$', bv.post_list),
+    url(r'^post/(?P<post_id>\d+)/$', bv.post_list),
+    url(r'^links/$', cv.links),
+    url(r'^super_admin/',admin.site.urls),
 
 ]
