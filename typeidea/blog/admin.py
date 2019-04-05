@@ -12,9 +12,12 @@ class CategoryAdmin(admin.ModelAdmin):
     # 配置列表页面展示的内容
     list_display = ('name', 'status', 'is_nav', 'created_time')
     fields = ('name', 'status', 'is_nav')
-    def post_count(self,obj):
+
+    def post_count(self, obj):
         return obj.post_set.count()
+
     post_count.short_description = '文章数量'
+
     # 匿名用户的存储
     def save_model(self, request, obj, form, change):
         # obj是当前要保存的用户对象，form是页面提交过来之后的对象，change是用于标记本次保存的数据是新增的还是更新的
@@ -32,6 +35,22 @@ class TagAdmin(admin.ModelAdmin):
         return super(TagAdmin, self).save_model(request, obj, form, change)
 
 
+class CategoryOwnerFilter(admin.SimpleListFilter):
+    """自定义过滤器只展示当前用户分类"""
+
+    title = '分类过滤器'
+    parameter_name = 'owner_category'
+
+    def lookups(self, request, model_admin):
+        return Category.objects.filter(owner=request.user).values_list('id', 'name')
+
+    def queryset(self, request, queryset):
+        category_id = self.value()
+        if category_id:
+            return queryset.filter(category_id=self.value())
+        return queryset
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = [
@@ -42,10 +61,9 @@ class PostAdmin(admin.ModelAdmin):
     list_display_links = []
 
     # list_filter用来配置页面过滤器，需要通过哪些字段的值来过滤列表页。
-    list_filter = ['category', ]
+    list_filter = [CategoryOwnerFilter]
     # search_field是用来配置搜索
     search_fields = ['title', 'category__name']
-
 
     # 编辑页面
     # save_on_top 保存、编辑、编辑并新建按钮是否在顶部展示
@@ -55,6 +73,9 @@ class PostAdmin(admin.ModelAdmin):
     actions_on_bottom = True
     save_on_top = True
 
+    exclude = ('owner',)
+
+    # fields配置的两个作用：1.限定要显示的字段 2.配置显示字段的顺序
     fields = (
         ('category', 'title'),
         'desc',
@@ -77,3 +98,7 @@ class PostAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.owner = request.user
         return super(PostAdmin, self).save_model(request, obj, form, change)
+
+    def get_queryset(self, request):
+        qs = super(PostAdmin, self).get_queryset(request)
+        return qs.filter(owner=request.user)
